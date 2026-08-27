@@ -68,13 +68,20 @@ def run_query(query: str, search: HybridSearch, reranker: CrossEncoderReranker) 
     if OPENAI_API_KEY and contexts:
         try:
             from openai import OpenAI
-            client = OpenAI()
+            base_url = os.getenv("OPENAI_BASE_URL", "https://openrouter.ai/api/v1") if "sk-or-" in OPENAI_API_KEY else None
+            model_name = os.getenv("LLM_MODEL", "google/gemma-4-31b-it:free" if "sk-or-" in OPENAI_API_KEY else "gpt-4o-mini")
+            
+            client = OpenAI(api_key=OPENAI_API_KEY, base_url=base_url) if base_url else OpenAI(api_key=OPENAI_API_KEY)
             context_str = "\n\n".join(contexts)
-            resp = client.chat.completions.create(model="gpt-4o-mini", messages=[
-                {"role": "system", "content": "Trả lời CHỈ dựa trên context. Nếu không có → nói 'Không tìm thấy.'"},
-                {"role": "user", "content": f"Context:\n{context_str}\n\nCâu hỏi: {query}"},
-            ])
-            answer = resp.choices[0].message.content
+            resp = client.chat.completions.create(
+                model=model_name,
+                messages=[
+                    {"role": "system", "content": "Bạn là trợ lý hỏi đáp chính xác. Trả lời câu hỏi CHỈ dựa trên context được cung cấp. Nếu context không có thông tin, hãy nói 'Không tìm thấy thông tin trong tài liệu.'"},
+                    {"role": "user", "content": f"Context:\n{context_str}\n\nCâu hỏi: {query}"},
+                ],
+                max_tokens=300,
+            )
+            answer = resp.choices[0].message.content or contexts[0]
         except Exception as e:
             print(f"  ⚠️  LLM generation failed: {e}", flush=True)
             answer = contexts[0]
