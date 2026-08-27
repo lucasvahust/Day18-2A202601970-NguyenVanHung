@@ -1,6 +1,6 @@
 # Individual Reflection — Lab 18: Production RAG Pipeline
 
-**Tên:** Nguyễn Văn Hùng  
+**Tên:** Nguyễn Văn Hưng
 **Mã học viên:** 2A202601970  
 **Module phụ trách:** Toàn bộ 5 Modules (M1 Chunking, M2 Hybrid Search, M3 Rerank, M4 Eval, M5 Enrichment)
 

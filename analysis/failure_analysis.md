@@ -1,6 +1,6 @@
 # Failure Analysis — Lab 18: Production RAG
 
-**Họ và tên:** Nguyễn Văn Hùng  
+**Họ và tên:** Nguyễn Văn Hưng 
 **Mã học viên:** 2A202601970  
 **Vai trò:** Implement toàn bộ 5 Modules (M1 Chunking, M2 Hybrid Search, M3 Rerank, M4 Eval, M5 Enrichment)
 
